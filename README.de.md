@@ -1,4 +1,8 @@
-# Python <img src="./assets/python.svg" width="40" height="40" alt="Python-Logo"/>
+**Read in other languages: [English 🇺🇸](README.en.md),
+[Polska 🇵🇱](README.pl.md), [German 🇩🇪](README.de.md), [French 🇫🇷](README.fr.md),
+[Spanish 🇪🇸](README.es.md), [Українська 🇺🇦](README.md).**
+
+# Python <img src="./assets/python.svg" width="40" height="40" alt="Python logo"/>
 
 ## Die beliebtesten Python-Interviewfragen und Antworten
 
