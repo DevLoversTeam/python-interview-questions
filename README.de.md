@@ -2206,7 +2206,7 @@ def log_calls(func):
     return wrapper
 ```
 
-Anwendungsfälle: Logging, Caching, Autorisierung, Retries, Metriken.
+Anwendungsfälle: Logging, Zwischenspeicherung, Autorisierung, Wiederholungen, Metriken.
 
 **Kurz:**
 
@@ -2807,7 +2807,7 @@ type(str)         # <class 'type'>
 **Kurz:**
 
 - Das einheitliche Objektmodell vereinfacht die Sprache.
-- Funktionen und Klassen sind ebenfalls First-Class-Objekte.
+- Funktionen und Klassen sind ebenfalls Objekte erster Klasse.
 - Das macht Python flexibel für Metaprogrammierung.
 
 </details>
@@ -4672,7 +4672,7 @@ Build-System und Tool-Konfigurationen wie `ruff`, `pytest` oder `mypy`.
 
 - Die Struktur sollte die Domäne widerspiegeln, nicht zufällige technische Details.
 - Klare Grenzen reduzieren zyklische Abhängigkeiten.
-- Tests und Tooling sollten ein First-Class-Bestandteil des Projekts sein.
+- Tests und Werkzeuge sollten ein zentraler Bestandteil des Projekts sein.
 
 </details>
 
@@ -4713,13 +4713,13 @@ TDD ist ein Zyklus: einen fehlschlagenden Test schreiben -> minimale Implementie
 #### Python
 
 Am populärsten sind `pytest`, `unittest` aus der Stdlib sowie `hypothesis`
-für Property-Based-Tests.
+für eigenschaftsbasierte Tests.
 
 **Kurz:**
 
 - `pytest` wird für neue Projekte am häufigsten gewählt.
 - `unittest` ist als Standard-Basiswerkzeug nützlich.
-- `hypothesis` stärkt die Abdeckung von Edge Cases.
+- `hypothesis` verbessert die Abdeckung von Randfällen.
 
 </details>
 
@@ -5021,7 +5021,7 @@ Grundlegende Werkzeuge:
 - unnötige Kopien vermeiden;
 - Generatoren bzw. Lazy Pipelines nutzen;
 - teure Berechnungen cachen;
-- Hot Paths bei Bedarf nach C, Rust oder NumPy auslagern.
+- Kritische Ausführungspfade bei Bedarf nach C, Rust oder NumPy auslagern.
 
 **Kurz:**
 
@@ -5037,13 +5037,13 @@ Grundlegende Werkzeuge:
 #### Python
 
 C-Extensions sind sinnvoll für enge CPU-Hotspots und die Integration mit nativen
-Bibliotheken. PyPy ist sinnvoll, wenn langlebiger Pure-Python-Code von JIT profitiert.
+Bibliotheken. PyPy ist sinnvoll, wenn langlebiger Python-Code stark von JIT profitiert.
 
 **Kurz:**
 
 - C-Extension: maximale Performance zum Preis höherer Build-Komplexität.
 - PyPy: potenzieller Gewinn ohne Umschreiben nach C.
-- Die Wahl sollte auf Benchmarks Ihrer Workload basieren.
+- Die Wahl sollte auf Benchmarks Ihrer konkreten Last basieren.
 
 </details>
 
@@ -5176,7 +5176,7 @@ dass sie gemeinsam Fortschritt machen: über Threads, asyncio oder Prozesse.
 
 - Es geht um das Management vieler Aufgaben, nicht zwingend parallel.
 - Es kann den Throughput von I/O-Szenarien erhöhen.
-- Es erfordert sauberes Design für Synchronisation und Cancellation.
+- Es erfordert sauberes Design für Synchronisation und Abbrüche.
 
 </details>
 
@@ -5218,13 +5218,13 @@ Nebenläufigkeit in I/O-gebundenen Aufgaben.
 #### Python
 
 Synchron: Ein Aufruf blockiert den aktuellen Thread bis zum Abschluss.
-Asynchron: `await` gibt die Kontrolle an den Event Loop zurück, während die Operation auf I/O wartet.
+Asynchron: `await` gibt die Kontrolle an die Ereignisschleife zurück, während die Operation auf I/O wartet.
 
 **Kurz:**
 
-- Async reduziert Leerlaufzeit bei I/O.
-- Sync ist einfacher für lineare Logik.
-- Async erhöht die Komplexität von Task-Steuerung und Cancellation.
+- Asynchronität reduziert Leerlaufzeit bei I/O.
+- Synchroner Code ist für lineare Logik einfacher.
+- Asynchronität erhöht die Komplexität von Aufgabensteuerung und Abbrüchen.
 
 </details>
 
@@ -5234,12 +5234,12 @@ Asynchron: `await` gibt die Kontrolle an den Event Loop zurück, während die Op
 #### Python
 
 `async def` definiert eine Coroutine-Funktion.
-`await` pausiert eine Coroutine bis ein Awaitable bereit ist und gibt die Kontrolle an den Loop zurück.
+`await` pausiert eine Coroutine, bis ein awaitable Objekt bereit ist, und gibt die Kontrolle an die Schleife zurück.
 
 **Kurz:**
 
 - Das ist die Syntax des asynchronen kooperativen Modells.
-- Sie wird zusammen mit `asyncio` und Async-Bibliotheken verwendet.
+- Sie wird zusammen mit `asyncio` und asynchronen Bibliotheken verwendet.
 - `await` ist nur innerhalb von `async def` möglich.
 
 </details>
@@ -5249,25 +5249,25 @@ Asynchron: `await` gibt die Kontrolle an den Event Loop zurück, während die Op
 
 #### Python
 
-`asyncio` startet einen Event Loop, der Tasks bzw. Coroutines ausführt, an
+`asyncio` startet eine Ereignisschleife, die Aufgaben bzw. Coroutinen ausführt, an
 `await`-Stellen umschaltet und bereite I/O-Operationen plant.
 
 **Kritische Regel:**
 Die Ereignisschleife läuft in einem einzigen Thread.
 Jede blockierende Operation (`time.sleep()`, synchrone
 `requests`-Aufrufe, schwere Berechnungen) stoppt den **gesamten** Loop
-und alle anderen Tasks.
+und alle anderen Aufgaben.
 
 **Kurz:**
 
-- Ein Thread kann über Kooperativität viele I/O-Aufgaben bedienen.
+- Ein Thread kann durch Kooperativität viele I/O-Aufgaben bedienen.
 - Das Scheduling ist nicht präemptiv.
 - Blockierende Aufrufe ruinieren die Performance von asyncio.
 
 </details>
 
 <details>
-<summary>245. Was ist ein Event Loop?</summary>
+<summary>245. Was ist eine Ereignisschleife?</summary>
 
 #### Python
 
@@ -5277,7 +5277,7 @@ passende Callbacks oder Coroutines startet.
 **Kurz:**
 
 - Er ist die zentrale Komponente des asyncio-Modells.
-- Er steuert den Lebenszyklus asynchroner Tasks.
+- Er steuert den Lebenszyklus asynchroner Aufgaben.
 - Er bestimmt, wann welche Coroutine weiterläuft.
 
 </details>
@@ -5291,14 +5291,14 @@ Wichtige Komponenten:
 
 - Ereignisschleife;
 - Coroutine (`async def`);
-- Task (`asyncio.create_task`);
-- Awaitables (Futures, Tasks, Coroutines);
+- Aufgabe (`asyncio.create_task`);
+- awaitable Objekte (Futures, Aufgaben, Coroutinen);
 - Synchronisationsprimitive (`Lock`, `Queue`, `Semaphore`).
 
 **Kurz:**
 
-- `asyncio` verbindet Scheduling und Async API in einem Modell.
-- Tasks teilen sich kooperativ einen Ausführungsthread.
+- `asyncio` verbindet Planung und asynchrone API in einem Modell.
+- Aufgaben teilen sich kooperativ einen Ausführungsthread.
 - Die Architektur muss Timeouts, Wiederholungen und Abbrüche berücksichtigen.
 
 </details>
@@ -5308,36 +5308,36 @@ Wichtige Komponenten:
 
 #### Python
 
-Wenn die Last CPU-gebunden ist oder die verwendeten Hauptbibliotheken blockieren und kein Async-API haben.
+Wenn die Last CPU-gebunden ist oder die verwendeten Hauptbibliotheken blockieren und kein asynchrones API haben.
 Außerdem lohnt es sich nicht für einfache kurze Skripte.
 
 **Lösung für blockierenden Code:**
-Wenn eine blockierende Bibliothek in einer Async-Umgebung verwendet werden muss,
+Wenn eine blockierende Bibliothek in einer asynchronen Umgebung verwendet werden muss,
 nutzen Sie `loop.run_in_executor(None, sync_func)`.
-Damit läuft sie in einem separaten Thread, ohne den Event Loop zu blockieren.
+Damit läuft sie in einem separaten Thread, ohne die Ereignisschleife zu blockieren.
 
 **Kurz:**
 
-- Async beschleunigt keine reinen Berechnungen.
+- Asynchronität beschleunigt keine reinen Berechnungen.
 - Ohne nicht blockierende I/O-Bibliotheken ist der Nutzen minimal.
-- `run_in_executor` hilft bei der Integration von Legacy- bzw. Sync-Code.
-- Die Komplexität von Async muss durch die Last gerechtfertigt sein.
+- `run_in_executor` hilft bei der Integration von Legacy- bzw. synchronem Code.
+- Die Komplexität asynchronen Codes muss durch die Last gerechtfertigt sein.
 
 </details>
 
 <details>
-<summary>248. Wie funktioniert asyncio Cancellation?</summary>
+<summary>248. Wie funktioniert das Abbrechen von Aufgaben in asyncio?</summary>
 
 #### Python
 
-Das Abbrechen eines Tasks (`task.cancel()`) löst `CancelledError` in der Coroutine aus.
+Das Abbrechen einer Aufgabe (`task.cancel()`) löst `CancelledError` in der Coroutine aus.
 Der Code muss Cleanup korrekt in `try/finally` behandeln.
 
 **Kurz:**
 
-- Cancellation ist normaler Control Flow in Async-Code.
+- Das Abbrechen ist normaler Kontrollfluss in asynchronem Code.
 - Die Behandlung von Abbrüchen muss im Coroutine-Design eingeplant werden.
-- Ignorierte Cancellation führt zu hängenden Tasks.
+- Ignorierte Abbrüche führen zu hängenden Aufgaben.
 
 </details>
 
@@ -5346,7 +5346,7 @@ Der Code muss Cleanup korrekt in `try/finally` behandeln.
 
 #### Python
 
-`contextvars` liefert context-lokale Variablen, die für Async- und Thread-Szenarien sicher sind.
+`contextvars` liefert kontextlokale Variablen, die für asynchrone und Thread-Szenarien sicher sind.
 Das ist nützlich für Request-ID, Correlation-ID und Tenant-Kontext.
 
 **Kurz:**
